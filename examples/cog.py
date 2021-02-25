@@ -14,6 +14,14 @@ import argparse, os
 import roboverse
 import numpy as np
 
+# DEFAULT_PRIOR_BUFFER = ('/media/avi/data/Work/github/avisingh599/minibullet'
+#                         '/data/oct6_Widow250DrawerGraspNeutral-v0_20K_save_all'
+#                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
+# DEFAULT_TASK_BUFFER = ('/media/avi/data/Work/github/avisingh599/minibullet'
+#                         '/data/oct6_Widow250DrawerGraspNeutral-v0_20K_save_all'
+#                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
+# CUSTOM_LOG_DIR = '/nfs/kun1/users/avi/doodad-output/'
+
 DEFAULT_PRIOR_BUFFER = ('/media/avi/data/Work/github/avisingh599/minibullet'
                         '/data/oct6_Widow250DrawerGraspNeutral-v0_20K_save_all'
                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
@@ -21,7 +29,6 @@ DEFAULT_TASK_BUFFER = ('/media/avi/data/Work/github/avisingh599/minibullet'
                         '/data/oct6_Widow250DrawerGraspNeutral-v0_20K_save_all'
                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
 CUSTOM_LOG_DIR = '/nfs/kun1/users/avi/doodad-output/'
-
 
 def experiment(variant):
     eval_env = roboverse.make(variant['env'], transpose_image=True)
