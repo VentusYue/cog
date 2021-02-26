@@ -9,11 +9,13 @@ from rlkit.torch.conv_networks import CNN, ConcatCNN
 from rlkit.torch.torch_rl_algorithm import TorchBatchRLAlgorithm
 from rlkit.util.video import VideoSaveFunction
 from rlkit.launchers.launcher_util import setup_logger
-
+from core.rl.envs.maze import ACRandMaze0S40Env
+from core.utils.general_utils import ParamDict, AttrDict
 import argparse, os
 import roboverse
 import numpy as np
-
+from core.rl.components.environment import GymEnv
+import d4rl
 # DEFAULT_PRIOR_BUFFER = ('/media/avi/data/Work/github/avisingh599/minibullet'
 #                         '/data/oct6_Widow250DrawerGraspNeutral-v0_20K_save_all'
 #                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
@@ -22,14 +24,20 @@ import numpy as np
 #                         '_noise_0.1_2020-10-06T19-37-26_100.npy')
 # CUSTOM_LOG_DIR = '/nfs/kun1/users/avi/doodad-output/'
 
-DEFAULT_PRIOR_BUFFER = ('/home/yue/data/cog/pickplace_prior.npy')
-DEFAULT_TASK_BUFFER = ('/home/yue/data/cog/pickplace_task.npy')
-CUSTOM_LOG_DIR = '/home/yue/yue_experiments/cog_exp/roboverse/picktray/'
+DEFAULT_PRIOR_BUFFER = ('/home/yue/data/maze/maze_S50Only/maze_S40Only/data.npy')
+DEFAULT_TASK_BUFFER = ('/home/yue/data/maze/demos_noisy_start/data.npy')
+CUSTOM_LOG_DIR = '/home/yue/yue_experiments/cog_exp/maze/'
 
 def experiment(variant):
-    eval_env = roboverse.make(variant['env'], transpose_image=True)
+    # eval_env = roboverse.make(variant['env'], transpose_image=True)
+    env_config = AttrDict(
+        reward_norm=1.,
+        seed=0,
+    )
+    eval_env = ACRandMaze0S40Env(env_config)
     expl_env = eval_env
     action_dim = eval_env.action_space.low.size
+
     cnn_params = variant['cnn_params']
     cnn_params.update(
         input_width=48,
@@ -113,6 +121,7 @@ def enable_gpus(gpu_str):
 
 if __name__ == "__main__":
     # noinspection PyTypeChecker
+    import pdb; pdb.set_trace()
     variant = dict(
         algorithm="CQL",
         version="normal",
@@ -177,8 +186,8 @@ if __name__ == "__main__":
     )
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--env", type=str, required=True)
-    parser.add_argument("--max-path-length", type=int, required=True)
+    parser.add_argument("--env", type=str, default="maze")
+    parser.add_argument("--max-path-length", type=int, default=40)
     parser.add_argument("--prior-buffer", type=str, default=DEFAULT_PRIOR_BUFFER)
     parser.add_argument("--task-buffer", type=str, default=DEFAULT_TASK_BUFFER)
     parser.add_argument("--gpu", default='0', type=str)
